@@ -5,29 +5,32 @@ ifeq ($(UNAME_S),Darwin)
 else ifeq ($(UNAME_S),Linux)
 	GOOS := linux
 else
-	GOOS := windows
+$(error "$$GOOS is not defined. If you are using Windows, try to re-make using 'GOOS=windows make ...' ")
 endif
 endif
 
-PACKAGES    := $(shell go list ./... | grep -v '/lib/')
+PACKAGES    := $(shell go list ./... | grep -v '/vendor/' | grep -v '/crypto/ed25519/chainkd' | grep -v '/mining/tensority')
+PACKAGES += 'core/mining/tensority/go_algorithm'
 
-BUILD_FLAGS := -ldflags "-X github.com/coingod/coingod/version.GitCommit=`git rev-parse HEAD`"
+BUILD_FLAGS := -ldflags "-X core/version.GitCommit=`git rev-parse HEAD`"
 
-COINGODD_BINARY32 := coingodd-$(GOOS)_386
+
+#COINGODD_BINARY32 := coingodd-$(GOOS)_386
 COINGODD_BINARY64 := coingodd-$(GOOS)_amd64
 
-COINGODCLI_BINARY32 := coingodcli-$(GOOS)_386
+#COINGODCLI_BINARY32 := coingodcli-$(GOOS)_386
 COINGODCLI_BINARY64 := coingodcli-$(GOOS)_amd64
 
 VERSION := $(shell awk -F= '/Version =/ {print $$2}' version/version.go | tr -d "\" ")
 
-COINGODD_RELEASE32 := coingodd-$(VERSION)-$(GOOS)_386
+
+#COINGODD_RELEASE32 := coingodd-$(VERSION)-$(GOOS)_386
 COINGODD_RELEASE64 := coingodd-$(VERSION)-$(GOOS)_amd64
 
-COINGODCLI_RELEASE32 := coingodcli-$(VERSION)-$(GOOS)_386
+#COINGODCLI_RELEASE32 := coingodcli-$(VERSION)-$(GOOS)_386
 COINGODCLI_RELEASE64 := coingodcli-$(VERSION)-$(GOOS)_amd64
 
-COINGOD_RELEASE32 := coingod-$(VERSION)-$(GOOS)_386
+#COINGOD_RELEASE32 := coingod-$(VERSION)-$(GOOS)_386
 COINGOD_RELEASE64 := coingod-$(VERSION)-$(GOOS)_amd64
 
 all: test target release-all install
@@ -35,6 +38,11 @@ all: test target release-all install
 coingodd:
 	@echo "Building coingodd to cmd/coingodd/coingodd"
 	@go build $(BUILD_FLAGS) -o cmd/coingodd/coingodd cmd/coingodd/main.go
+
+coingodd-simd:
+	@echo "Building SIMD version coingodd to cmd/coingodd/coingodd"
+	@cd mining/tensority/cgo_algorithm/lib/ && make
+	@go build -tags="simd" $(BUILD_FLAGS) -o cmd/coingodd/coingodd cmd/coingodd/main.go
 
 coingodcli:
 	@echo "Building coingodcli to cmd/coingodcli/coingodcli"
@@ -48,32 +56,24 @@ install:
 target:
 	mkdir -p $@
 
-binary: target/$(COINGODD_BINARY32) target/$(COINGODD_BINARY64) target/$(COINGODCLI_BINARY32) target/$(COINGODCLI_BINARY64)
+binary: target/$(COINGODD_BINARY64) target/$(COINGODCLI_BINARY64)
 
 ifeq ($(GOOS),windows)
 release: binary
-	cd target && cp -f $(COINGODD_BINARY32) $(COINGODD_BINARY32).exe
-	cd target && cp -f $(COINGODCLI_BINARY32) $(COINGODCLI_BINARY32).exe
-	cd target && md5sum  $(COINGODD_BINARY32).exe $(COINGODCLI_BINARY32).exe >$(COINGOD_RELEASE32).md5
-	cd target && zip $(COINGOD_RELEASE32).zip  $(COINGODD_BINARY32).exe $(COINGODCLI_BINARY32).exe $(COINGOD_RELEASE32).md5
-	cd target && rm -f  $(COINGODD_BINARY32) $(COINGODCLI_BINARY32)  $(COINGODD_BINARY32).exe $(COINGODCLI_BINARY32).exe $(COINGOD_RELEASE32).md5
 	cd target && cp -f $(COINGODD_BINARY64) $(COINGODD_BINARY64).exe
 	cd target && cp -f $(COINGODCLI_BINARY64) $(COINGODCLI_BINARY64).exe
-	cd target && md5sum  $(COINGODD_BINARY64).exe $(COINGODCLI_BINARY64).exe >$(COINGOD_RELEASE64).md5
-	cd target && zip $(COINGOD_RELEASE64).zip  $(COINGODD_BINARY64).exe $(COINGODCLI_BINARY64).exe $(COINGOD_RELEASE64).md5
-	cd target && rm -f  $(COINGODD_BINARY64) $(COINGODCLI_BINARY64)  $(COINGODD_BINARY64).exe $(COINGODCLI_BINARY64).exe $(COINGOD_RELEASE64).md5
+	cd target && md5sum $(COINGODD_BINARY64).exe $(COINGODCLI_BINARY64).exe >$(COINGOD_RELEASE64).md5
+	cd target && zip $(COINGOD_RELEASE64).zip $(COINGODD_BINARY64).exe $(COINGODCLI_BINARY64).exe $(COINGOD_RELEASE64).md5
+	cd target && rm -f $(COINGODD_BINARY64) $(COINGODCLI_BINARY64) $(COINGODD_BINARY64).exe $(COINGODCLI_BINARY64).exe $(COINGOD_RELEASE64).md5
 else
 release: binary
-	cd target && md5sum  $(COINGODD_BINARY32) $(COINGODCLI_BINARY32) >$(COINGOD_RELEASE32).md5
-	cd target && tar -czf $(COINGOD_RELEASE32).tgz  $(COINGODD_BINARY32) $(COINGODCLI_BINARY32) $(COINGOD_RELEASE32).md5
-	cd target && rm -f  $(COINGODD_BINARY32) $(COINGODCLI_BINARY32) $(COINGOD_RELEASE32).md5
-	cd target && md5sum  $(COINGODD_BINARY64) $(COINGODCLI_BINARY64) >$(COINGOD_RELEASE64).md5
-	cd target && tar -czf $(COINGOD_RELEASE64).tgz  $(COINGODD_BINARY64) $(COINGODCLI_BINARY64) $(COINGOD_RELEASE64).md5
-	cd target && rm -f  $(COINGODD_BINARY64) $(COINGODCLI_BINARY64) $(COINGOD_RELEASE64).md5
+	cd target && md5sum $(COINGODD_BINARY64) $(COINGODCLI_BINARY64) >$(COINGOD_RELEASE64).md5
+	cd target && tar -czf $(COINGOD_RELEASE64).tgz $(COINGODD_BINARY64) $(COINGODCLI_BINARY64) $(COINGOD_RELEASE64).md5
+	cd target && rm -f $(COINGODD_BINARY64) $(COINGODCLI_BINARY64) $(COINGOD_RELEASE64).md5
 endif
 
 release-all: clean
-	GOOS=darwin  make release
+#	GOOS=darwin  make release
 	GOOS=linux   make release
 	GOOS=windows make release
 
@@ -91,28 +91,24 @@ clean:
 	@rm -rf crypto/sm2/*.pem
 	@echo "Done."
 
-target/$(COINGODD_BINARY32):
-	CGO_ENABLED=0 GOARCH=386 go build $(BUILD_FLAGS) -o $@ cmd/coingodd/main.go
-
 target/$(COINGODD_BINARY64):
 	CGO_ENABLED=0 GOARCH=amd64 go build $(BUILD_FLAGS) -o $@ cmd/coingodd/main.go
-
-target/$(COINGODCLI_BINARY32):
-	CGO_ENABLED=0 GOARCH=386 go build $(BUILD_FLAGS) -o $@ cmd/coingodcli/main.go
 
 target/$(COINGODCLI_BINARY64):
 	CGO_ENABLED=0 GOARCH=amd64 go build $(BUILD_FLAGS) -o $@ cmd/coingodcli/main.go
 
+
+
 test:
 	@echo "====> Running go test"
-	@go test $(PACKAGES)
+	@go test -tags "network" $(PACKAGES)
 
 benchmark:
 	@go test -bench $(PACKAGES)
 
 functional-tests:
-	@go test -timeout=5m -tags="functional" ./test 
+	@go test -timeout=5m -tags="functional" ./test
 
-ci: test
+ci: test functional-tests
 
 .PHONY: all target release-all clean test benchmark
