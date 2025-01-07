@@ -79,7 +79,7 @@ var CGDefinitionMap = map[string]interface{}{
 	"name":        CGAlias,
 	"symbol":      CGAlias,
 	"decimals":    8,
-	"description": `Donald J. Trump, the God of Coin`,
+	"description": `Trump, The God Of Coins`,
 }
 
 // IsBech32SegwitPrefix returns whether the prefix is a known prefix for segwit
