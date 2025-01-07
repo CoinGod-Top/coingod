@@ -30,7 +30,7 @@ node_alias = ""
 var mainNetConfigTmpl = `chain_id = "mainnet"
 [p2p]
 laddr = "tcp://0.0.0.0:46657"
-seeds = "217.194.133.64:46657,24.233.0.82:46657"
+seeds = "217.194.133.64:46657,24.233.0.82:46657,24.233.0.5:46657,122.11.28.243:46657"
 `
 
 var testNetConfigTmpl = `chain_id = "wisdom"
