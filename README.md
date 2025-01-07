@@ -5,16 +5,16 @@ Coingod
 
 **Official golang implementation of the Coingod protocol.**
 
-Automated builds are available for stable releases and the unstable master branch. Binary archives are published at https://github.com/Coingod/coingod/releases.
+Automated builds are available for stable releases and the unstable master branch. Binary archives are published at https://github.com/CoinGod-Top/coingod/releases.
 
 ## What is Coingod?
 
-Coingod is software designed to operate and connect to highly scalable blockchain networks confirming to the Coingod Blockchain Protocol, which allows partipicants to define, issue and transfer digitial assets on a multi-asset shared ledger. Please refer to the [White Paper](https://github.com/Coingod/wiki/blob/master/White-Paper/%E6%AF%94%E5%8E%9F%E9%93%BE%E6%8A%80%E6%9C%AF%E7%99%BD%E7%9A%AE%E4%B9%A6-%E8%8B%B1%E6%96%87%E7%89%88.md) for more details.
+Please note that CoinGod is a cryptocurrency created for entertainment purposes and is not associated with or endorsed by Donald J. Trump.
 
 In the current state `coingod` is able to:
 
 - Manage key, account as well as asset
-- Send transactions, i.e., issue, spend and retire asset
+- Send transactions
 
 ## Installing with Homebrew
 
@@ -26,7 +26,7 @@ brew tap coingod/coingod && brew install coingod
 
 ### Requirements
 
-- [Go](https://golang.org/doc/install) version 1.8 or higher, with `$GOPATH` set to your preferred directory
+- [Go](https://golang.org/doc/install) version 1.22 or higher, with `$GOPATH` set to your preferred directory
 
 ### Installation
 
@@ -40,13 +40,13 @@ $ go env GOROOT GOPATH
 - Get the source code
 
 ``` bash
-$ git clone https://github.com/Coingod/coingod.git $GOPATH/src/github.com/coingod/coingod
+$ git clone https://github.com/CoinGod-Top/coingod.git $GOPATH/src/github.com/coingod
 ```
 
 - Build source code
 
 ``` bash
-$ cd $GOPATH/src/github.com/coingod/coingod
+$ cd $GOPATH/src/github.com/coingod
 $ make coingodd    # build coingodd
 $ make coingodcli  # build coingodcli
 ```
@@ -86,7 +86,7 @@ After that, you'll see `config.toml` generated, then launch the node.
 ### launch
 
 ``` bash
-$ ./coingodd node
+$ nohup ./coingodd node &
 ```
 
 available flags for `coingodd node`:
@@ -147,13 +147,13 @@ Ensure your [Docker](https://www.docker.com/) version is 17.05 or higher.
 $ docker build -t coingod .
 ```
 
-For the usage please refer to [running-in-docker-wiki](https://github.com/Coingod/coingod/wiki/Running-in-Docker).
+For the usage please refer to [running-in-docker-wiki](https://github.com/CoinGod-Top/coingod/wiki/Running-in-Docker).
 
 ## Contributing
 
 Thank you for considering helping out with the source code! Any contributions are highly appreciated, and we are grateful for even the smallest of fixes!
 
-If you run into an issue, feel free to [coingod issues](https://github.com/Coingod/coingod/issues/) in this repository. We are glad to help!
+If you run into an issue, feel free to [coingod issues](https://github.com/CoinGod-Top/coingod/issues/) in this repository. We are glad to help!
 
 ## License
 
