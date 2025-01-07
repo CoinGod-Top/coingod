@@ -1,4 +1,4 @@
-name: KUSK Main Workflow
+name: COINGOD Main Workflow
 
 defaults:
   run:
@@ -73,7 +73,7 @@ jobs:
       - name: Create GitHub release
         uses: softprops/action-gh-release@v1
         with:
-          name: KUSK ${{ github.ref_name }}
+          name: COINGOD ${{ github.ref_name }}
           body: ${{ steps.git-cliff.outputs.content }}
           files: target/*
         env:
