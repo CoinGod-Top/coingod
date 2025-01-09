@@ -96,6 +96,7 @@ Flags:
       --auth.disable                     Disable rpc access authenticate
       --chain_id string                  Select network type
   -h, --help                             help for node
+      --mining
       --log_file string                  Log output file (default "log")
       --log_level string                 Select log level(debug, info, warn, error or fatal)
       --p2p.dial_timeout int             Set dial timeout (default 3)
