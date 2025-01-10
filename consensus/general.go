@@ -22,9 +22,9 @@ const (
 
 	// These configs need add to casper config in elegant way
 	MaxNumOfValidators = int(10)
-	InitCGSupply       = 1000000000000000
+	InitCGSupply       = 320000000000000
 	RewardThreshold    = 0.5
-	BlockReward        = uint64(600000000)
+	BlockReward        = uint64(200000000)
 
 	// config parameter for coinbase reward
 	CoinbasePendingBlockNumber = uint64(10)
@@ -38,7 +38,8 @@ const (
 	BCRPRequiredCGAmount = uint64(100000000)
 
 	CGAlias               = "CG"
-	defaultVotePendingNum = 302400
+	COINGODAlias          = "CoinGod"
+	defaultVotePendingNum = 202500
 )
 
 type CasperConfig struct {
@@ -76,7 +77,7 @@ var CGAssetID = &bc.AssetID{
 
 // CGDefinitionMap is the ....
 var CGDefinitionMap = map[string]interface{}{
-	"name":        CGAlias,
+	"name":        COINGODAlias,
 	"symbol":      CGAlias,
 	"decimals":    8,
 	"description": `CoinGod`,
@@ -128,8 +129,7 @@ var MainNetParams = Params{
 		BlocksOfEpoch:       10,
 		MinValidatorVoteNum: 3e14,
 		VotePendingBlockNums: []VotePendingBlockNum{
-			{BeginBlock: 0, EndBlock: 432000, Num: 14400},
-			{BeginBlock: 432000, EndBlock: math.MaxUint64, Num: defaultVotePendingNum},
+			{BeginBlock: 0, EndBlock: math.MaxUint64, Num: defaultVotePendingNum},
 		},
 		FederationXpubs: []chainkd.XPub{
 			xpub("8c675cc0d0de07618dedd702fe54321f3dd0ab46b4b50deac4b87940ac0a974f79b9e33ca3161bf8cbd8d64b8214bd85db2e9bb04be0393f41041278278530c3"),
