@@ -1,7 +1,7 @@
 Coingod
 ======
 
-[![Build Status](https://travis-ci.org/Coingod/coingod.svg)](https://travis-ci.org/Coingod/coingod) [![AGPL v3](https://img.shields.io/badge/license-AGPL%20v3-brightgreen.svg)](./LICENSE)
+[![Build Status](https://travis-ci.org/Coingod/coingod.svg)](https://travis-ci.org/CoinGod-Top/coingod) [![AGPL v3](https://img.shields.io/badge/license-AGPL%20v3-brightgreen.svg)](./LICENSE)
 
 **Official golang implementation of the Coingod protocol.**
 
